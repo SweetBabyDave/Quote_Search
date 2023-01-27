@@ -1,4 +1,5 @@
 interface QuoteProps {
+    id: string;
     author: string;
     content: string;
 }
