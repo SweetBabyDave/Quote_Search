@@ -17,7 +17,7 @@ export function App () {
         if (!hasSearched) {
           return <HomeQuotePage />;
         } 
-        return <QuotePage name={name} />;
+        return <QuotePage button={hasSearched} name={name} />;
       })()}
     </div>
   );
