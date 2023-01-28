@@ -6,7 +6,7 @@ interface SearchBarProps {
 export function SearchBar({name, setName}: SearchBarProps) {
 
     return (
-        <div id="searchbar">
+        <div>
             <label>
                 <input id="searchbar" type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Search Quotes"/>
             </label>
