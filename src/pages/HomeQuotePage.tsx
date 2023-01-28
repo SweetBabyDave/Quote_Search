@@ -1,33 +1,27 @@
-import { Quote } from "../components/Quote";
+import { Quote, RandomQuote } from "../quotefunctions";
 import { useEffect, useState } from "react";
 
 export function HomeQuotePage() {
-    const [author, setAuthor] = useState("");
-    const [content, setContent] = useState("");
+    const [quote, setQuote] = useState<Quote | undefined>(undefined);
 
-    async function loadRandomQuote() {
-        try {
-            const result = await fetch("https://usu-quotes-mimic.vercel.app/api/random");
-            const quote = await result.json();
-            setAuthor(quote.author);
-            setContent(quote.content);
-            
-        } catch (error) {
-            console.log("Random quote API did not succeed.");
-        }
+    async function fetchMyQuote() {
+        const quote = await RandomQuote();
+        setQuote(quote);
     }
 
     useEffect(() => {
-        loadRandomQuote();
+        fetchMyQuote();
     }, []);
-
+    if (quote === undefined) {
+        return <p>Loading...</p>
+    }
+    if(quote.author === "") {
+        quote.author = "Unknown";
+    }
     return (
-        <div>
-            <Quote 
-            id="Random" 
-            author={author} 
-            content={content}
-            />
+        <div id="quotediv">
+            <p>{quote.content}</p>
+            <p>-{quote.author}</p>
         </div>
     );
 }

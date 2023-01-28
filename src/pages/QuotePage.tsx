@@ -1,27 +1,36 @@
-import { Quote } from "../components/Quote";
-import { SearchBar } from "../components/SearchBar";
+import { Quote, ListQuotes } from "../quotefunctions";
 import { useEffect, useState } from "react";
 
-export function QuotePage() {
+interface QuotePageProps {
+    name: string;
+}
 
-    async function loadQuotes() {
-        try {
-            const result = await fetch("https://usu-quotes-mimic.vercel.app/api/search?query=Thomas Jefferson");
-            const quote = await result.json();
-            console.log(quote);
-            
-        } catch (error) {
-            console.log("Quote API did not succeed.");
-        }
+export function QuotePage({name}: QuotePageProps) {
+    const [quotes, setQuote] = useState<Quote[] | undefined>(undefined);
+
+    async function fetchMyQuotes() {
+        const quote = await ListQuotes(name);
+        setQuote(quote);
     }
     
     useEffect(() => {
-    
+        fetchMyQuotes();
     }, []);
+    
+    if (quotes === undefined) {
+        return <p> Loading... </p>
+    }
 
     return (
-        <div>
-
+        <div>    
+            {quotes.map((quote) => {
+                return (
+                    <div id="quotediv" key={quote._id}>
+                        <p>{quote.content}</p>
+                        <p>-{quote.author}</p>
+                    </div>
+                );
+            })}
         </div>
     );
 }
